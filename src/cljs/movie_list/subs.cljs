@@ -7,6 +7,6 @@
    (:name db)))
 
 (re-frame/reg-sub
-  ::lists
+  ::list
   (fn [db]
-    (:lists db)))
+    (:list db)))

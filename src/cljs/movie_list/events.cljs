@@ -7,3 +7,20 @@
  ::initialize-db
  (fn-traced [_ _]
    db/default-db))
+
+(re-frame/reg-event-db
+  ::set-dragged-item
+  (fn [db [_ item]]
+    (assoc db :dragged-item item)))
+
+(re-frame/reg-event-db
+  ::clear-dragged-item
+  (fn [db _]
+    (dissoc db :dragged-item)))
+(re-frame/reg-event-db
+  ::drag-finished
+  (fn [{:keys [dragged-item] :as db} [_ destination]]
+    (update db :list (fn [list]
+                       (let [destination-index (.indexOf list destination)
+                            [start end] (split-at destination-index (remove #{dragged-item} list))]
+                         (concat start [dragged-item] end))))))
