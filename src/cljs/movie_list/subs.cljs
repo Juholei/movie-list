@@ -10,3 +10,13 @@
   ::list
   (fn [db]
     (:list db)))
+
+(re-frame/reg-sub
+  ::list-name
+  (fn [db]
+    (:list-name db)))
+
+(re-frame/reg-sub
+  ::dialog-open?
+  (fn [db]
+    (:dialog-open? db)))

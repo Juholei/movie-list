@@ -17,6 +17,7 @@
   ::clear-dragged-item
   (fn [db _]
     (dissoc db :dragged-item)))
+
 (re-frame/reg-event-db
   ::drag-finished
   (fn [{:keys [dragged-item] :as db} [_ destination]]
@@ -24,3 +25,8 @@
                        (let [destination-index (.indexOf list destination)
                             [start end] (split-at destination-index (remove #{dragged-item} list))]
                          (concat start [dragged-item] end))))))
+
+(re-frame/reg-event-db
+  ::open-add-movie-modal
+  (fn [db _]
+    (assoc db :dialog-open? true)))

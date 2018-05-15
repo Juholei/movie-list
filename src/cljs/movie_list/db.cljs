@@ -1,7 +1,9 @@
 (ns movie-list.db)
 
 (def default-db
-  {:list [{:actors "Robert Downey Jr., Chris Hemsworth, Mark Ruffalo, Chris Evans",
+  {:dialog-open? false
+   :list-name "Hyvejä leffoja"
+   :list [{:actors "Robert Downey Jr., Chris Hemsworth, Mark Ruffalo, Chris Evans",
             :genre "Action, Adventure, Fantasy",
             :imdb-votes "219,195",
             :released "27 Apr 2018",
