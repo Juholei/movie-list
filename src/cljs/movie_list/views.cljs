@@ -22,10 +22,21 @@
    [ui/card-text {:expandable true} (:plot movie-data)]])
 
 (defn add-movie-dialog [open?]
-  [ui/dialog {:title "Add a movie"
-              :modal false
-              :open open?}
-   [:h1 "Hello it's me"]])
+  (let [movie-name (re-frame/subscribe [::subs/movie-name])]
+    [ui/dialog {:title "Add a movie"
+                :modal false
+                :open  open?
+                :on-request-close #(re-frame/dispatch [::events/set-add-movie-modal-open false])}
+     [ui/text-field {:hint-text "Type name of the movie"
+                     :value     @movie-name
+                     :on-change #(re-frame/dispatch [::events/set-movie-name (-> %
+                                                                                 .-target
+                                                                                 .-value)])}]
+     [ui/raised-button {:label "Add movie"
+                        :label-position "before"
+                        :icon (ic/av-movie)
+                        :primary true
+                        :on-click #(re-frame/dispatch [::events/search-movie @movie-name])}]]))
 (defn main-panel []
   (let [list (re-frame/subscribe [::subs/list])
         list-name (re-frame/subscribe [::subs/list-name])
@@ -42,5 +53,5 @@
         (for [movie-data @list]
           ^{:key (:imdb-id movie-data)}
           [movie movie-data])]
-       [ui/floating-action-button {:on-click #(re-frame/dispatch [::events/open-add-movie-modal])}
+       [ui/floating-action-button {:on-click #(re-frame/dispatch [::events/set-add-movie-modal-open true])}
         (ic/content-add {:color "white"})]]]]))

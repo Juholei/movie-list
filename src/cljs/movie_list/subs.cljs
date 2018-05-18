@@ -20,3 +20,8 @@
   ::dialog-open?
   (fn [db]
     (:dialog-open? db)))
+
+(re-frame/reg-sub
+  ::movie-name
+  (fn [db]
+    (:movie-name db)))

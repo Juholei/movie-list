@@ -3,7 +3,10 @@
                  [org.clojure/clojurescript "1.10.238"]
                  [reagent "0.8.0"]
                  [re-frame "0.10.5"]
-                 [cljs-react-material-ui "0.2.48"]]
+                 [cljs-react-material-ui "0.2.48"]
+                 [cljs-ajax "0.7.3"]
+                 [day8.re-frame/http-fx "0.1.6"]
+                 [camel-snake-kebab "0.4.0"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]]
 
