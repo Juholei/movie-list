@@ -25,3 +25,8 @@
   ::movie-name
   (fn [db]
     (:movie-name db)))
+
+(re-frame/reg-sub
+  ::dragged-item
+  (fn [{dragged-item :dragged-item}]
+    dragged-item))

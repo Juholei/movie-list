@@ -40,7 +40,8 @@
 (defn main-panel []
   (let [list (re-frame/subscribe [::subs/list])
         list-name (re-frame/subscribe [::subs/list-name])
-        open-dialog? (re-frame/subscribe [::subs/dialog-open?])]
+        open-dialog? (re-frame/subscribe [::subs/dialog-open?])
+        dragged-item (re-frame/subscribe [::subs/dragged-item])]
     [ui/mui-theme-provider
      {:mui-theme (get-mui-theme
                    {:palette {:text-color (color :green600)}})}
@@ -54,4 +55,9 @@
           ^{:key (:imdb-id movie-data)}
           [movie movie-data])]
        [ui/floating-action-button {:on-click #(re-frame/dispatch [::events/set-add-movie-modal-open true])}
-        (ic/content-add {:color "white"})]]]]))
+        (ic/content-add {:color "white"})]
+       (when @dragged-item
+         [ui/floating-action-button {:background-color "red"
+                                     :on-drag-over #(.preventDefault %)
+                                     :on-drop      #(re-frame/dispatch [::events/delete-dragged-movie])}
+          (ic/action-delete-forever)])]]]))
