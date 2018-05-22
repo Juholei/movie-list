@@ -37,6 +37,17 @@
                         :icon (ic/av-movie)
                         :primary true
                         :on-click #(re-frame/dispatch [::events/search-movie @movie-name])}]]))
+
+(defn add-movie-button []
+  [ui/floating-action-button {:on-click #(re-frame/dispatch [::events/set-add-movie-modal-open true])}
+   (ic/content-add {:color "white"})])
+
+(defn remove-movie-button []
+  [ui/floating-action-button {:background-color "red"
+                              :on-drag-over #(.preventDefault %)
+                              :on-drop      #(re-frame/dispatch [::events/delete-dragged-movie])}
+   (ic/action-delete-forever)])
+
 (defn main-panel []
   (let [list (re-frame/subscribe [::subs/list])
         list-name (re-frame/subscribe [::subs/list-name])
@@ -54,10 +65,6 @@
         (for [movie-data @list]
           ^{:key (:imdb-id movie-data)}
           [movie movie-data])]
-       [ui/floating-action-button {:on-click #(re-frame/dispatch [::events/set-add-movie-modal-open true])}
-        (ic/content-add {:color "white"})]
-       (when @dragged-item
-         [ui/floating-action-button {:background-color "red"
-                                     :on-drag-over #(.preventDefault %)
-                                     :on-drop      #(re-frame/dispatch [::events/delete-dragged-movie])}
-          (ic/action-delete-forever)])]]]))
+       (if @dragged-item
+         [remove-movie-button]
+         [add-movie-button])]]]))
