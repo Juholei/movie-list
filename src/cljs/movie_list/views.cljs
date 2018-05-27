@@ -60,11 +60,12 @@
       [ui/app-bar {:title "Movie List Maker Pro"}]
       [add-movie-dialog @open-dialog?]
       [ui/paper
-       [ui/list {:style {:width "30em"}}
-        [ui/subheader @list-name]
-        (for [movie-data @list]
-          ^{:key (:imdb-id movie-data)}
-          [movie movie-data])]
+       [:div.container
+        [ui/list
+         [ui/subheader @list-name]
+         (for [movie-data @list]
+           ^{:key (:imdb-id movie-data)}
+           [movie movie-data])]]
        (if @dragged-item
          [remove-movie-button]
          [add-movie-button])]]]))
