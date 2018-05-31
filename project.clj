@@ -27,7 +27,7 @@
                          [day8.re-frame/re-frame-10x "0.3.3"]
                          [day8.re-frame/tracing "0.5.1"]
                          [com.cemerick/piggieback "0.2.2"]
-                         [figwheel-sidecar "0.5.5"]]
+                         [figwheel-sidecar "0.5.16"]]
 
           :plugins      [[lein-figwheel "0.5.16"]
                          [lein-doo "0.1.10"]]
