@@ -68,3 +68,8 @@
   ::delete-dragged-movie
   (fn [{:keys [dragged-item] :as db} _]
     (update db :list (partial remove #(= dragged-item %)))))
+
+(re-frame/reg-event-db
+  ::change-list-name
+  (fn [db [_ name]]
+    (assoc db :list-name name)))

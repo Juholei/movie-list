@@ -62,7 +62,11 @@
       [ui/paper
        [:div.container
         [ui/list
-         [ui/subheader @list-name]
+         [ui/text-field {:hint-text "Name of the list"
+                         :value         @list-name
+                         :on-change #(re-frame/dispatch [::events/change-list-name (-> %
+                                                                                       .-target
+                                                                                       .-value)])}]
          (for [movie-data @list]
            ^{:key (:imdb-id movie-data)}
            [movie movie-data])]]
