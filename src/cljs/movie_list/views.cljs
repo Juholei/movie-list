@@ -2,6 +2,7 @@
   (:require [re-frame.core :as re-frame]
             [movie-list.subs :as subs]
             [movie-list.events :as events]
+            [movie-list.router :as router]
             [cljsjs.material-ui]
             [cljs-react-material-ui.core :refer [get-mui-theme color]]
             [cljs-react-material-ui.reagent :as ui]
@@ -72,4 +73,5 @@
            [movie movie-data])]]
        (if @dragged-item
          [remove-movie-button]
-         [add-movie-button])]]]))
+         [add-movie-button])
+       [ui/text-field {:value (router/list-url @list-name (mapv :imdb-id @list))}]]]]))

@@ -6,7 +6,8 @@
                  [cljs-react-material-ui "0.2.48"]
                  [cljs-ajax "0.7.3"]
                  [day8.re-frame/http-fx "0.1.6"]
-                 [camel-snake-kebab "0.4.0"]]
+                 [camel-snake-kebab "0.4.0"]
+                 [funcool/bide "1.6.0"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]]
 
