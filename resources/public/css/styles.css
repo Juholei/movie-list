@@ -7,11 +7,7 @@
   flex: 1 33%;
 }
 
-.movie-list {
-}
-
 @media all and (min-width: 600px) {
-  /* We tell both sidebars to share a row */
   .container > * { flex: 1 100%; }
 }
 
