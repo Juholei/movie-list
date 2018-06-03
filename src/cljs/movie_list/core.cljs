@@ -3,7 +3,8 @@
             [re-frame.core :as re-frame]
             [movie-list.events :as events]
             [movie-list.views :as views]
-            [movie-list.config :as config]))
+            [movie-list.config :as config]
+            [movie-list.router :as router]))
 
 
 (defn dev-setup []
@@ -18,5 +19,6 @@
 
 (defn ^:export init []
   (re-frame/dispatch-sync [::events/initialize-db])
+  (router/start-router!)
   (dev-setup)
   (mount-root))
