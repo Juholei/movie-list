@@ -12,8 +12,18 @@
        "/#"
        (bide/resolve router ::main-route {:list-name name} imdb-ids)))
 
-(defn on-navigate [name params query]
-  (re-frame/dispatch [::events/change-list-name (:list-name params)]))
+(defn movie-to-position [acc [order-keyword movie-id]]
+  (assoc acc movie-id (int (name order-keyword))))
+
+(defn query-params->list-order-map [query]
+  (reduce movie-to-position {} query))
+
+(defn on-navigate [_ params query]
+  (let [order-of-movies (query-params->list-order-map query)]
+    (re-frame/dispatch [::events/change-list-name (:list-name params)])
+    (re-frame/dispatch [::events/set-order-list order-of-movies])
+    (doseq [id (vals query)]
+      (re-frame/dispatch [::events/retrieve-movie-by-id id]))))
 
 (defn start-router! []
   (bide/start! router {:default ::main-route

@@ -40,13 +40,17 @@
   (fn [db _]
     (assoc db :error "Movie not found. I'm sorry.")))
 
+(defn sort-movies [list order]
+  (sort-by #(order (:imdb-id %)) list))
+
 (re-frame/reg-event-db
   ::add-movie-to-list
-  (fn [db [_ movie]]
+  (fn [{:keys [order] :as db} [_ movie]]
     (-> db
         (update :list conj (transform-keys ->kebab-case-keyword movie))
         (assoc :dialog-open? false
-               :movie-name ""))))
+               :movie-name "")
+        (update :list sort-movies order))))
 
 (re-frame/reg-event-fx
   ::search-movie
@@ -54,6 +58,17 @@
     {:db         (assoc db :in-progress? true)
      :http-xhrio {:method          :get
                   :uri             (str "http://www.omdbapi.com/?apikey=[apikeyhere]&t=" name)
+                  :timeout         8000
+                  :response-format (ajax/json-response-format {:keywords? true})
+                  :on-success      [::add-movie-to-list]
+                  :on-failure      [::movie-not-found]}}))
+
+(re-frame/reg-event-fx
+  ::retrieve-movie-by-id
+  (fn [{:keys [db]} [_ id]]
+    {:db         (assoc db :in-progress? true)
+     :http-xhrio {:method          :get
+                  :uri             (str "http://www.omdbapi.com/?apikey=[apikeyhere]&i=" id)
                   :timeout         8000
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-success      [::add-movie-to-list]
@@ -73,3 +88,8 @@
   ::change-list-name
   (fn [db [_ name]]
     (assoc db :list-name name)))
+
+(re-frame/reg-event-db
+  ::set-order-list
+  (fn [db [_ order-of-movies]]
+    (assoc db :order order-of-movies)))

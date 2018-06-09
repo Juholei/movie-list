@@ -14,7 +14,8 @@
             :on-drag-start #(do (.setData (.-dataTransfer %) "text/plain" " ")
                                 (re-frame/dispatch [::events/set-dragged-item movie-data]))
             :on-drag-end   #(re-frame/dispatch [::events/clear-dragged-item])
-            :on-drop       #(re-frame/dispatch [::events/drag-finished movie-data])}
+            :on-drop       #(do (re-frame/dispatch [::events/set-order-list nil])
+                                (re-frame/dispatch [::events/drag-finished movie-data]))}
    [ui/card-header {:title                  (:title movie-data)
                     :subtitle               (:year movie-data)
                     :avatar                 (:poster movie-data)
@@ -40,13 +41,15 @@
                         :on-click #(re-frame/dispatch [::events/search-movie @movie-name])}]]))
 
 (defn add-movie-button []
-  [ui/floating-action-button {:on-click #(re-frame/dispatch [::events/set-add-movie-modal-open true])}
+  [ui/floating-action-button {:on-click #(do (re-frame/dispatch [::events/set-order-list nil])
+                                             (re-frame/dispatch [::events/set-add-movie-modal-open true]))}
    (ic/content-add {:color "white"})])
 
 (defn remove-movie-button []
   [ui/floating-action-button {:background-color "red"
-                              :on-drag-over #(.preventDefault %)
-                              :on-drop      #(re-frame/dispatch [::events/delete-dragged-movie])}
+                              :on-drag-over     #(.preventDefault %)
+                              :on-drop          #(do (re-frame/dispatch [::events/set-order-list nil])
+                                                     (re-frame/dispatch [::events/delete-dragged-movie]))}
    (ic/action-delete-forever)])
 
 (defn main-panel []
