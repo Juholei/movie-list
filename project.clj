@@ -38,7 +38,7 @@
   :cljsbuild
   {:builds
    [{:id           "dev"
-     :source-paths ["src/cljs" "env/dev/cljs"]
+     :source-paths ["src/cljs"]
      :figwheel     {:on-jsload "movie-list.core/mount-root"}
      :compiler     {:main                 movie-list.core
                     :output-to            "resources/public/js/compiled/app.js"
