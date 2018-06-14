@@ -33,7 +33,7 @@
 (re-frame/reg-event-db
   ::set-add-movie-modal-open
   (fn [db [_ open?]]
-    (assoc db :dialog-open? open?)))
+    (assoc db :dialog-open? open? :error nil)))
 
 (re-frame/reg-event-db
   ::movie-not-found
@@ -55,7 +55,7 @@
 (re-frame/reg-event-fx
   ::search-movie
   (fn [{:keys [db]} [_ name]]
-    {:db         (assoc db :in-progress? true)
+    {:db         (assoc db :in-progress? true :error nil)
      :http-xhrio {:method          :get
                   :uri             (str "http://www.omdbapi.com/?apikey=[apikeyhere]&t=" name)
                   :timeout         8000

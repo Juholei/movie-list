@@ -24,11 +24,13 @@
    [ui/card-text {:expandable true} (:plot movie-data)]])
 
 (defn add-movie-dialog [open?]
-  (let [movie-name (re-frame/subscribe [::subs/movie-name])]
+  (let [movie-name (re-frame/subscribe [::subs/movie-name])
+        error (re-frame/subscribe [::subs/error])]
     [ui/dialog {:title "Add a movie"
                 :modal false
                 :open  open?
                 :on-request-close #(re-frame/dispatch [::events/set-add-movie-modal-open false])}
+     [:h1 @error]
      [ui/text-field {:hint-text "Type name of the movie"
                      :value     @movie-name
                      :on-change #(re-frame/dispatch [::events/set-movie-name (-> %

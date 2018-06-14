@@ -25,3 +25,8 @@
   ::dragged-item
   (fn [{dragged-item :dragged-item}]
     dragged-item))
+
+(re-frame/reg-sub
+  ::error
+  (fn [{error :error}]
+    error))
