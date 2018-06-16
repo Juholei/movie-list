@@ -7,6 +7,8 @@
             [camel-snake-kebab.core :refer [->kebab-case-keyword]]
             [camel-snake-kebab.extras :refer [transform-keys]]))
 
+(def omdb-api-key nil)
+
 (re-frame/reg-event-db
  ::initialize-db
  (fn-traced [_ _]
@@ -33,15 +35,17 @@
 (re-frame/reg-event-db
   ::set-add-movie-modal-open
   (fn [db [_ open?]]
-    (assoc db :dialog-open? open? :error nil)))
+    (assoc db :dialog-open? open? :error nil :movie-name "")))
 
 (re-frame/reg-event-db
   ::movie-not-found
   (fn [db _]
-    (assoc db :error "Movie not found. I'm sorry.")))
+    (assoc db :error "Movie not found. I'm sorry." :in-progress? false)))
 
 (defn sort-movies [list order]
-  (sort-by #(order (:imdb-id %)) list))
+  (if order
+    (sort-by #(order (:imdb-id %)) list))
+    list)
 
 (re-frame/reg-event-db
   ::add-movie-to-list
@@ -52,15 +56,22 @@
                :movie-name "")
         (update :list sort-movies order))))
 
+(re-frame/reg-event-db
+  ::set-search-results
+  (fn [db [_ results]]
+    (-> db
+        (assoc :search-results (transform-keys ->kebab-case-keyword results))
+        (assoc :in-progress? false))))
+
 (re-frame/reg-event-fx
   ::search-movie
   (fn [{:keys [db]} [_ name]]
     {:db         (assoc db :in-progress? true :error nil)
      :http-xhrio {:method          :get
-                  :uri             (str "http://www.omdbapi.com/?apikey=[apikeyhere]&t=" name)
+                  :uri             (str "http://www.omdbapi.com/?apikey=" omdb-api-key "&type=movie&s=" name)
                   :timeout         8000
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :on-success      [::add-movie-to-list]
+                  :on-success      [::set-search-results]
                   :on-failure      [::movie-not-found]}}))
 
 (re-frame/reg-event-fx
@@ -68,7 +79,18 @@
   (fn [{:keys [db]} [_ id]]
     {:db         (assoc db :in-progress? true)
      :http-xhrio {:method          :get
-                  :uri             (str "http://www.omdbapi.com/?apikey=[apikeyhere]&i=" id)
+                  :uri             (str "http://www.omdbapi.com/?apikey=" omdb-api-key "&i=" id)
+                  :timeout         8000
+                  :response-format (ajax/json-response-format {:keywords? true})
+                  :on-success      [::add-movie-to-list]
+                  :on-failure      [::movie-not-found]}}))
+
+(re-frame/reg-event-fx
+  ::retrieve-movie-by-name
+  (fn [{:keys [db]} [_ id]]
+    {:db         (assoc db :in-progress? true)
+     :http-xhrio {:method          :get
+                  :uri             (str "http://www.omdbapi.com/?apikey=" omdb-api-key "&t=" id)
                   :timeout         8000
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-success      [::add-movie-to-list]

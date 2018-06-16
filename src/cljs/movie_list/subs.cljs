@@ -30,3 +30,14 @@
   ::error
   (fn [{error :error}]
     error))
+
+(re-frame/reg-sub
+  ::in-progress?
+  (fn [{in-progress? :in-progress?}]
+    in-progress?))
+
+(re-frame/reg-sub
+  ::search-results
+  (fn [{search-results :search-results}]
+    (if search-results
+      (map :title (:search search-results)))))

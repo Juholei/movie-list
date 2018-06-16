@@ -25,22 +25,29 @@
 
 (defn add-movie-dialog [open?]
   (let [movie-name (re-frame/subscribe [::subs/movie-name])
-        error (re-frame/subscribe [::subs/error])]
+        error (re-frame/subscribe [::subs/error])
+        in-progress? (re-frame/subscribe [::subs/in-progress?])
+        search-results (re-frame/subscribe [::subs/search-results])]
     [ui/dialog {:title "Add a movie"
                 :modal false
                 :open  open?
                 :on-request-close #(re-frame/dispatch [::events/set-add-movie-modal-open false])}
      [:h1 @error]
-     [ui/text-field {:hint-text "Type name of the movie"
-                     :value     @movie-name
-                     :on-change #(re-frame/dispatch [::events/set-movie-name (-> %
-                                                                                 .-target
-                                                                                 .-value)])}]
-     [ui/raised-button {:label "Add movie"
+     [ui/auto-complete {:hint-text       "Type name of the movie"
+                        :search-text     @movie-name
+                        :dataSource      @search-results
+                        :open            (boolean @search-results)
+                        :open-on-focus   true
+                        :on-update-input #(do (re-frame/dispatch [::events/set-movie-name %])
+                                              (re-frame/dispatch [::events/search-movie %]))}]
+     [ui/raised-button {:label          "Add movie"
                         :label-position "before"
-                        :icon (ic/av-movie)
-                        :primary true
-                        :on-click #(re-frame/dispatch [::events/search-movie @movie-name])}]]))
+                        :icon           (if @in-progress?
+                                          (ic/action-autorenew)
+                                          (ic/av-movie))
+                        :disabled       @in-progress?
+                        :primary        true
+                        :on-click       #(re-frame/dispatch [::events/retrieve-movie-by-name @movie-name])}]]))
 
 (defn add-movie-button []
   [ui/floating-action-button {:on-click #(do (re-frame/dispatch [::events/set-order-list nil])
