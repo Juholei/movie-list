@@ -39,5 +39,4 @@
 (re-frame/reg-sub
   ::search-results
   (fn [{search-results :search-results}]
-    (if search-results
-      (map :title (:search search-results)))))
+    (map :title (:search search-results))))

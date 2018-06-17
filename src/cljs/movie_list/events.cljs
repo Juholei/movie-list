@@ -76,9 +76,8 @@
 
 (re-frame/reg-event-fx
   ::retrieve-movie-by-id
-  (fn [{:keys [db]} [_ id]]
-    {:db         (assoc db :in-progress? true)
-     :http-xhrio {:method          :get
+  (fn [_ [_ id]]
+    {:http-xhrio {:method          :get
                   :uri             (str "http://www.omdbapi.com/?apikey=" omdb-api-key "&i=" id)
                   :timeout         8000
                   :response-format (ajax/json-response-format {:keywords? true})
