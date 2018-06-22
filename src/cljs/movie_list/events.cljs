@@ -114,3 +114,8 @@
   ::set-order-list
   (fn [db [_ order-of-movies]]
     (assoc db :order order-of-movies)))
+
+(re-frame/reg-event-db
+  ::set-share-list-dialog-open
+  (fn [db [_ open?]]
+    (assoc db :share-list-dialog-open? open?)))

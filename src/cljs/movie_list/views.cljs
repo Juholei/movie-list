@@ -23,6 +23,14 @@
                     :show-expandable-button true}]
    [ui/card-text {:expandable true} (:plot movie-data)]])
 
+(defn share-dialog [open? link]
+  [ui/dialog {:title "Share your list"
+              :modal false
+              :open open?
+              :on-request-close #(re-frame/dispatch [::events/set-share-list-dialog-open false])}
+   [ui/text-field {:name "share-link"
+                   :value link}]])
+
 (defn add-movie-dialog [open?]
   (let [movie-name (re-frame/subscribe [::subs/movie-name])
         error (re-frame/subscribe [::subs/error])
@@ -61,17 +69,23 @@
                                                      (re-frame/dispatch [::events/delete-dragged-movie]))}
    (ic/action-delete-forever)])
 
+(defn share-list-button []
+  [ui/floating-action-button {:on-click #(re-frame/dispatch [::events/set-share-list-dialog-open true])}
+   (ic/social-share)])
+
 (defn main-panel []
   (let [list (re-frame/subscribe [::subs/list])
         list-name (re-frame/subscribe [::subs/list-name])
-        open-dialog? (re-frame/subscribe [::subs/dialog-open?])
+        open-add-movie-dialog? (re-frame/subscribe [::subs/dialog-open?])
+        open-share-dialog? (re-frame/subscribe [::subs/share-dialog-open?])
         dragged-item (re-frame/subscribe [::subs/dragged-item])]
     [ui/mui-theme-provider
      {:mui-theme (get-mui-theme
                    {:palette {:text-color (color :green600)}})}
      [:div
       [ui/app-bar {:title "Movie List Maker Pro"}]
-      [add-movie-dialog @open-dialog?]
+      [add-movie-dialog @open-add-movie-dialog?]
+      [share-dialog @open-share-dialog? (router/list-url @list-name (mapv :imdb-id @list))]
       [ui/paper
        [:div.container
         [ui/list
@@ -86,4 +100,5 @@
        (if @dragged-item
          [remove-movie-button]
          [add-movie-button])
-       [ui/text-field {:value (router/list-url @list-name (mapv :imdb-id @list))}]]]]))
+       (when (and @list @list-name)
+         [share-list-button])]]]))

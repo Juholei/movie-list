@@ -40,3 +40,8 @@
   ::search-results
   (fn [{search-results :search-results}]
     (map :title (:search search-results))))
+
+(re-frame/reg-sub
+  ::share-dialog-open?
+  (fn [{open? :share-list-dialog-open?}]
+    open?))
