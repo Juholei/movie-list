@@ -45,3 +45,8 @@
   ::share-dialog-open?
   (fn [{open? :share-list-dialog-open?}]
     open?))
+
+(re-frame/reg-sub
+  ::alert-message
+  (fn [{alert-message :alert-message}]
+    alert-message))

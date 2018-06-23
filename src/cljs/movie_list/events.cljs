@@ -119,3 +119,8 @@
   ::set-share-list-dialog-open
   (fn [db [_ open?]]
     (assoc db :share-list-dialog-open? open?)))
+
+(re-frame/reg-event-db
+  ::set-alert-message
+  (fn [db [_ message]]
+    (assoc db :alert-message message)))

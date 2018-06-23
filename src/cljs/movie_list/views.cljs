@@ -30,7 +30,9 @@
               :on-request-close #(re-frame/dispatch [::events/set-share-list-dialog-open false])}
    [ui/text-field {:name     "share-link"
                    :value    link
-                   :on-click #(.select (.-target %))}]])
+                   :on-click #(do (.select (.-target %))
+                                  (.execCommand js/document "copy")
+                                  (re-frame/dispatch [::events/set-alert-message "Link copied to clipboard!"]))}]])
 
 (defn add-movie-dialog [open?]
   (let [movie-name (re-frame/subscribe [::subs/movie-name])
@@ -79,7 +81,8 @@
         list-name (re-frame/subscribe [::subs/list-name])
         open-add-movie-dialog? (re-frame/subscribe [::subs/dialog-open?])
         open-share-dialog? (re-frame/subscribe [::subs/share-dialog-open?])
-        dragged-item (re-frame/subscribe [::subs/dragged-item])]
+        dragged-item (re-frame/subscribe [::subs/dragged-item])
+        alert-message (re-frame/subscribe [::subs/alert-message])]
     [ui/mui-theme-provider
      {:mui-theme (get-mui-theme
                    {:palette {:text-color (color :green600)}})}
@@ -102,4 +105,8 @@
          [remove-movie-button]
          [add-movie-button])
        (when (and @list @list-name)
-         [share-list-button])]]]))
+         [share-list-button])]
+      [ui/snackbar {:message          (or @alert-message "")
+                    :open             (boolean @alert-message)
+                    :auto-hide-duration 5000
+                    :on-request-close #(re-frame/dispatch [::events/set-alert-message nil])}]]]))
