@@ -28,8 +28,9 @@
               :modal false
               :open open?
               :on-request-close #(re-frame/dispatch [::events/set-share-list-dialog-open false])}
-   [ui/text-field {:name "share-link"
-                   :value link}]])
+   [ui/text-field {:name     "share-link"
+                   :value    link
+                   :on-click #(.select (.-target %))}]])
 
 (defn add-movie-dialog [open?]
   (let [movie-name (re-frame/subscribe [::subs/movie-name])
