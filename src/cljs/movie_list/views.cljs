@@ -61,12 +61,14 @@
                         :on-click       #(re-frame/dispatch [::events/retrieve-movie-by-name @movie-name])}]]))
 
 (defn add-movie-button []
-  [ui/floating-action-button {:on-click #(do (re-frame/dispatch [::events/set-order-list nil])
+  [ui/floating-action-button {:style {:margin-right 20}
+                              :on-click #(do (re-frame/dispatch [::events/set-order-list nil])
                                              (re-frame/dispatch [::events/set-add-movie-modal-open true]))}
    (ic/content-add {:color "white"})])
 
 (defn remove-movie-button []
-  [ui/floating-action-button {:background-color "red"
+  [ui/floating-action-button {:style {:margin-right 20}
+                              :background-color "red"
                               :on-drag-over     #(.preventDefault %)
                               :on-drop          #(do (re-frame/dispatch [::events/set-order-list nil])
                                                      (re-frame/dispatch [::events/delete-dragged-movie]))}
@@ -90,22 +92,25 @@
       [ui/app-bar {:title "Movie List Maker Pro"}]
       [add-movie-dialog @open-add-movie-dialog?]
       [share-dialog @open-share-dialog? (router/list-url @list-name (mapv :imdb-id @list))]
-      [ui/paper
        [:div.container
-        [ui/list
-         [ui/text-field {:hint-text "Name of the list"
-                         :value         @list-name
-                         :on-change #(re-frame/dispatch [::events/change-list-name (-> %
-                                                                                       .-target
-                                                                                       .-value)])}]
-         (for [movie-data @list]
-           ^{:key (:imdb-id movie-data)}
-           [movie movie-data])]]
-       (if @dragged-item
-         [remove-movie-button]
-         [add-movie-button])
-       (when (and @list @list-name)
-         [share-list-button])]
+        [:div]
+        [ui/paper
+         [ui/list
+          [ui/text-field {:full-width true
+                          :hint-text "Name of the list"
+                          :value     @list-name
+                          :on-change #(re-frame/dispatch [::events/change-list-name (-> %
+                                                                                        .-target
+                                                                                        .-value)])}]
+          (for [movie-data @list]
+            ^{:key (:imdb-id movie-data)}
+            [movie movie-data])]
+          (if @dragged-item
+            [remove-movie-button]
+            [add-movie-button])
+         (when (and @list @list-name)
+           [share-list-button])]
+        [:div]]
       [ui/snackbar {:message          (or @alert-message "")
                     :open             (boolean @alert-message)
                     :auto-hide-duration 5000

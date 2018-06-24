@@ -7,10 +7,6 @@
   flex: 1 33%;
 }
 
-@media all and (min-width: 600px) {
+@media all and (max-width: 800px) {
   .container > * { flex: 1 100%; }
-}
-
-@media all and (min-width: 800px) {
-  .container > * { flex: 1 33%; }
 }
