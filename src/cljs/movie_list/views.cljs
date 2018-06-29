@@ -42,6 +42,7 @@
     [ui/dialog {:title "Add a movie"
                 :modal false
                 :open  open?
+                :content-style {:width "max-content"}
                 :on-request-close #(re-frame/dispatch [::events/set-add-movie-modal-open false])}
      [:h1 @error]
      [ui/auto-complete {:hint-text       "Type name of the movie"
