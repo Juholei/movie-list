@@ -27,6 +27,7 @@
   [ui/dialog {:title "Share your list"
               :modal false
               :open open?
+              :content-style {:width "max-content"}
               :on-request-close #(re-frame/dispatch [::events/set-share-list-dialog-open false])}
    [ui/text-field {:name     "share-link"
                    :value    link
