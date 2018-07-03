@@ -98,11 +98,11 @@
         [ui/paper
          [ui/list
           [ui/text-field {:full-width true
-                          :hint-text "Name of the list"
-                          :value     @list-name
-                          :on-change #(re-frame/dispatch [::events/change-list-name (-> %
-                                                                                        .-target
-                                                                                        .-value)])}]
+                          :hint-text  "Name of the list"
+                          :value      (or @list-name "")
+                          :on-change  #(re-frame/dispatch [::events/change-list-name (-> %
+                                                                                         .-target
+                                                                                         .-value)])}]
           (for [movie-data @list]
             ^{:key (:imdb-id movie-data)}
             [movie movie-data])]

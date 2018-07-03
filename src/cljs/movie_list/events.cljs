@@ -60,7 +60,8 @@
   ::set-search-results
   (fn [db [_ results]]
     (-> db
-        (assoc :search-results (transform-keys ->kebab-case-keyword results))
+        (update :search-results (partial apply conj) (:search (transform-keys ->kebab-case-keyword results)))
+        (update :search-results distinct)
         (assoc :in-progress? false))))
 
 (re-frame/reg-event-fx

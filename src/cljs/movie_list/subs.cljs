@@ -39,7 +39,7 @@
 (re-frame/reg-sub
   ::search-results
   (fn [{search-results :search-results}]
-    (map :title (:search search-results))))
+    (map :title search-results)))
 
 (re-frame/reg-sub
   ::share-dialog-open?
