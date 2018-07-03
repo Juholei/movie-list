@@ -44,8 +44,8 @@
 
 (defn sort-movies [list order]
   (if order
-    (sort-by #(order (:imdb-id %)) list))
-    list)
+    (sort-by #(order (:imdb-id %)) list)
+    list))
 
 (re-frame/reg-event-db
   ::add-movie-to-list
