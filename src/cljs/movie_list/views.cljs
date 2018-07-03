@@ -95,7 +95,6 @@
       [add-movie-dialog @open-add-movie-dialog?]
       [share-dialog @open-share-dialog? (router/list-url @list-name (mapv :imdb-id @list))]
        [:div.container
-        [:div]
         [ui/paper
          [ui/list
           [ui/text-field {:full-width true
@@ -111,8 +110,7 @@
             [remove-movie-button]
             [add-movie-button])
          (when (and @list @list-name)
-           [share-list-button])]
-        [:div]]
+           [share-list-button])]]
       [ui/snackbar {:message          (or @alert-message "")
                     :open             (boolean @alert-message)
                     :auto-hide-duration 5000
