@@ -3,25 +3,11 @@
             [movie-list.subs :as subs]
             [movie-list.events :as events]
             [movie-list.router :as router]
+            [movie-list.components.movie-card :refer [movie-card]]
             [cljsjs.material-ui]
             [cljs-react-material-ui.core :refer [get-mui-theme color]]
             [cljs-react-material-ui.reagent :as ui]
             [cljs-react-material-ui.icons :as ic]))
-
-(defn movie [movie-data]
-  [ui/card {:draggable     true
-            :on-drag-over  #(.preventDefault %)
-            :on-drag-start #(do (.setData (.-dataTransfer %) "text/plain" " ")
-                                (re-frame/dispatch [::events/set-dragged-item movie-data]))
-            :on-drag-end   #(re-frame/dispatch [::events/clear-dragged-item])
-            :on-drop       #(do (re-frame/dispatch [::events/set-order-list nil])
-                                (re-frame/dispatch [::events/drag-finished movie-data]))}
-   [ui/card-header {:title                  (:title movie-data)
-                    :subtitle               (:year movie-data)
-                    :avatar                 (:poster movie-data)
-                    :act-as-expander        true
-                    :show-expandable-button true}]
-   [ui/card-text {:expandable true} (:plot movie-data)]])
 
 (defn share-dialog [open? link]
   [ui/dialog {:title "Share your list"
@@ -105,7 +91,7 @@
                                                                                          .-value)])}]
           (for [movie-data @list]
             ^{:key (:imdb-id movie-data)}
-            [movie movie-data])]
+            [movie-card movie-data])]
           (if @dragged-item
             [remove-movie-button]
             [add-movie-button])
