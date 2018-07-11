@@ -7,3 +7,7 @@
 @media all and (max-width: 800px) {
   .container { width: 100%; }
 }
+
+.align-right {
+  text-align: right;
+}

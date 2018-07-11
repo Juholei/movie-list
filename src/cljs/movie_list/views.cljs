@@ -49,13 +49,15 @@
                         :on-click       #(re-frame/dispatch [::events/retrieve-movie-by-name @movie-name])}]]))
 
 (defn add-movie-button []
-  [ui/floating-action-button {:style {:margin-right 20}
+  [ui/floating-action-button {:style {:margin-left 20
+                                      :margin-right 20
+                                      :margin-bottom 10}
                               :on-click #(do (re-frame/dispatch [::events/set-order-list nil])
                                              (re-frame/dispatch [::events/set-add-movie-modal-open true]))}
    (ic/content-add {:color "white"})])
 
 (defn remove-movie-button []
-  [ui/floating-action-button {:style {:margin-right 20}
+  [ui/floating-action-button {:style {:margin-left 20}
                               :background-color "red"
                               :on-drag-over     #(.preventDefault %)
                               :on-drop          #(do (re-frame/dispatch [::events/set-order-list nil])
@@ -92,11 +94,12 @@
           (for [movie-data @list]
             ^{:key (:imdb-id movie-data)}
             [movie-card movie-data])]
+         [:div.align-right
+          (when (and @list @list-name)
+            [share-list-button])
           (if @dragged-item
             [remove-movie-button]
-            [add-movie-button])
-         (when (and @list @list-name)
-           [share-list-button])]]
+            [add-movie-button])]]]
       [ui/snackbar {:message          (or @alert-message "")
                     :open             (boolean @alert-message)
                     :auto-hide-duration 5000
