@@ -36,6 +36,7 @@
                         :search-text     @movie-name
                         :dataSource      @search-results
                         :open            (boolean @search-results)
+                        :filter          (-> js/MaterialUI .-AutoComplete .-fuzzyFilter)
                         :open-on-focus   true
                         :on-update-input #(do (re-frame/dispatch [::events/set-movie-name %])
                                               (re-frame/dispatch [::events/search-movie %]))}]
