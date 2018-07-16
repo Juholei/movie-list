@@ -20,10 +20,11 @@
 
 (defn on-navigate [_ params query]
   (let [order-of-movies (query-params->list-order-map query)
-        list-name (-> params
-                      :list-name
-                      (js/decodeURIComponent))]
-    (re-frame/dispatch [::events/change-list-name list-name])
+        list-name (some-> params
+                          :list-name
+                          js/decodeURIComponent)]
+    (when list-name
+      (re-frame/dispatch [::events/change-list-name list-name]))
     (re-frame/dispatch [::events/set-order-list order-of-movies])
     (doseq [id (vals query)]
       (re-frame/dispatch [::events/retrieve-movie-by-id id]))))
