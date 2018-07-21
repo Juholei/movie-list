@@ -38,9 +38,9 @@
     (assoc db :dialog-open? open? :error nil :movie-name "")))
 
 (re-frame/reg-event-db
-  ::movie-not-found
+  ::server-error
   (fn [db _]
-    (assoc db :error "Movie not found. I'm sorry." :in-progress? false)))
+    (assoc db :error "Problem connecting to OMDB. Please try again." :in-progress? false)))
 
 (defn sort-movies [list order]
   (if order
@@ -69,32 +69,32 @@
   (fn [{:keys [db]} [_ name]]
     {:db         (assoc db :in-progress? true :error nil)
      :http-xhrio {:method          :get
-                  :uri             (str "http://www.omdbapi.com/?apikey=" omdb-api-key "&type=movie&s=" name)
+                  :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&type=movie&s=" name)
                   :timeout         8000
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-success      [::set-search-results]
-                  :on-failure      [::movie-not-found]}}))
+                  :on-failure      [::server-error]}}))
 
 (re-frame/reg-event-fx
   ::retrieve-movie-by-id
   (fn [_ [_ id]]
     {:http-xhrio {:method          :get
-                  :uri             (str "http://www.omdbapi.com/?apikey=" omdb-api-key "&i=" id)
+                  :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&i=" id)
                   :timeout         8000
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-success      [::add-movie-to-list]
-                  :on-failure      [::movie-not-found]}}))
+                  :on-failure      [::server-error]}}))
 
 (re-frame/reg-event-fx
   ::retrieve-movie-by-name
   (fn [{:keys [db]} [_ id]]
     {:db         (assoc db :in-progress? true)
      :http-xhrio {:method          :get
-                  :uri             (str "http://www.omdbapi.com/?apikey=" omdb-api-key "&t=" id)
+                  :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&t=" id)
                   :timeout         8000
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-success      [::add-movie-to-list]
-                  :on-failure      [::movie-not-found]}}))
+                  :on-failure      [::server-error]}}))
 
 (re-frame/reg-event-db
   ::set-movie-name
