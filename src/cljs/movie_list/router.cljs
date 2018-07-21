@@ -9,7 +9,10 @@
   (str (-> js/window
            .-location
            .-origin)
-       "/#"
+       (-> js/window
+           .-location
+           .-pathname)
+       "#"
        (bide/resolve router ::main-route {:list-name name} imdb-ids)))
 
 (defn movie-to-position [acc [order-keyword movie-id]]
