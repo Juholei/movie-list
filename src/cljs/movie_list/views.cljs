@@ -58,7 +58,9 @@
    (ic/content-add {:color "white"})])
 
 (defn remove-movie-button []
-  [ui/floating-action-button {:style {:margin-left 20}
+  [ui/floating-action-button {:style {:margin-left 20
+                                      :margin-right 20
+                                      :margin-bottom 10}
                               :background-color "red"
                               :on-drag-over     #(.preventDefault %)
                               :on-drop          #(do (re-frame/dispatch [::events/set-order-list nil])
