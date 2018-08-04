@@ -101,7 +101,7 @@
             ^{:key (:imdb-id movie-data)}
             [movie-card movie-data])]
          [:div.align-right
-          (when (and @list @list-name)
+          (when (and (not-empty @list) (not= @list-name ""))
             [share-list-button])
           (if @dragged-item
             [remove-movie-button]
