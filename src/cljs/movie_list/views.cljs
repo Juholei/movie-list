@@ -34,7 +34,7 @@
      [:h1 @error]
      [ui/auto-complete {:hint-text       "Type name of the movie"
                         :search-text     @movie-name
-                        :dataSource      @search-results
+                        :dataSource      (map :title @search-results)
                         :open            (boolean @search-results)
                         :filter          (-> js/MaterialUI .-AutoComplete .-fuzzyFilter)
                         :open-on-focus   true
@@ -54,7 +54,8 @@
                                       :margin-right 20
                                       :margin-bottom 10}
                               :on-click #(do (re-frame/dispatch [::events/set-order-list nil])
-                                             (re-frame/dispatch [::events/set-add-movie-modal-open true]))}
+                                             (re-frame/dispatch [::events/set-add-movie-modal-open true])
+                                             (re-frame/dispatch [::events/clear-dragged-item]))}
    (ic/content-add {:color "white"})])
 
 (defn remove-movie-button []
