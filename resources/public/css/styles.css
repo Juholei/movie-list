@@ -12,3 +12,23 @@
 .align-right {
   text-align: right;
 }
+
+.wrapper {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1px;
+}
+.blur {
+    width:100%;
+    height:100%;
+    position: absolute;
+    background-size:cover;
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -ms-filter: blur(10px);
+    -o-filter: blur(10px);
+    filter: blur(10px);
+}
+.content{
+ position: relative;
+}
