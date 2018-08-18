@@ -83,7 +83,8 @@
      {:mui-theme (get-mui-theme
                    {:palette {:text-color (color :green600)}})}
      [:div
-      [ui/app-bar {:title "Movie List Maker Pro"}]
+      [ui/app-bar {:title "Movie List Maker Pro"
+                   :icon-style-left {:display "none"}}]
       [add-movie-dialog @open-add-movie-dialog?]
       [share-dialog @open-share-dialog? (router/list-url @list-name (mapv :imdb-id @list))]
        [:div.container
