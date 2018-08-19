@@ -78,7 +78,8 @@
         open-add-movie-dialog? (re-frame/subscribe [::subs/dialog-open?])
         open-share-dialog? (re-frame/subscribe [::subs/share-dialog-open?])
         dragged-item (re-frame/subscribe [::subs/dragged-item])
-        alert-message (re-frame/subscribe [::subs/alert-message])]
+        alert-message (re-frame/subscribe [::subs/alert-message])
+        all-loaded? (re-frame/subscribe [::subs/all-loaded?])]
     [ui/mui-theme-provider
      {:mui-theme (get-mui-theme
                    {:palette {:text-color (color :green600)}})}
@@ -89,19 +90,27 @@
       [share-dialog @open-share-dialog? (router/list-url @list-name (mapv :imdb-id @list))]
        [:div.container
         [ui/paper
-         [ui/list
-          [ui/text-field {:full-width  true
-                          :hint-text   "Name of the list"
-                          :value       (or @list-name "")
-                          :input-style {:text-align "center"}
-                          :hint-style  {:text-align "center"
-                                        :width "100%"}
-                          :on-change   #(re-frame/dispatch [::events/change-list-name (-> %
-                                                                                          .-target
-                                                                                          .-value)])}]
-          (for [movie-data @list]
-            ^{:key (:imdb-id movie-data)}
-            [movie-card movie-data])]
+         (if @all-loaded?
+           [ui/list
+            [ui/text-field {:full-width  true
+                            :hint-text   "Name of the list"
+                            :value       (or @list-name "")
+                            :input-style {:text-align "center"}
+                            :hint-style  {:text-align "center"
+                                          :width      "100%"}
+                            :on-change   #(re-frame/dispatch [::events/change-list-name (-> %
+                                                                                            .-target
+                                                                                            .-value)])}]
+            (for [movie-data @list]
+              ^{:key (:imdb-id movie-data)}
+              [movie-card movie-data])]
+           [ui/circular-progress {:style {:margin "auto"
+                                          :padding"50px"
+                                          :width "50%"
+                                          :height "50%"
+                                          :display "flex"
+                                          :justify-content "center"
+                                          :align-items "center"}}])
          [:div.align-right
           (when (and (not-empty @list) (not= @list-name ""))
             [share-list-button])

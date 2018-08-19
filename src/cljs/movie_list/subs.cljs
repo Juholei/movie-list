@@ -50,3 +50,10 @@
   ::alert-message
   (fn [{alert-message :alert-message}]
     alert-message))
+
+(re-frame/reg-sub
+  ::all-loaded?
+  (fn [{:keys [list order]}]
+    (if order
+      (= (count list) (count order))
+      true)))
