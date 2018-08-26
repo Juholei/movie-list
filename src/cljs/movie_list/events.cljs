@@ -1,13 +1,12 @@
 (ns movie-list.events
   (:require [re-frame.core :as re-frame]
             [movie-list.db :as db]
+            [movie-list.config :refer [omdb-api-key]]
             [day8.re-frame.tracing :refer-macros [fn-traced defn-traced]]
             [day8.re-frame.http-fx]
             [ajax.core :as ajax]
             [camel-snake-kebab.core :refer [->kebab-case-keyword]]
             [camel-snake-kebab.extras :refer [transform-keys]]))
-
-(def omdb-api-key nil)
 
 (re-frame/reg-event-db
  ::initialize-db
