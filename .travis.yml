@@ -1,5 +1,7 @@
 language: clojure
 
+before_install: pip install awscli
+
 before_script: sed -i -e "s/(def omdb-api-key nil)/(def omdb-api-key \"$OMDBKEY\")/g" src/cljs/movie_list/config.cljs
 script: lein cljsbuild once min
 
