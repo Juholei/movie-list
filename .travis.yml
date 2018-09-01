@@ -1,7 +1,7 @@
 language: clojure
 
 before_install:
-  - sudo apt-get install python3
+  - pyenv shell 3.6.3
   - pip3 install awscli
 
 before_script: sed -i -e "s/(def omdb-api-key nil)/(def omdb-api-key \"$OMDBKEY\")/g" src/cljs/movie_list/config.cljs
