@@ -67,5 +67,5 @@
                     :output-dir    "resources/public/js/compiled/test/out"
                     :optimizations :none}}
     ]}
+  :aliases {"build-release" ["do" "clean," "cljsbuild" "once" "min"]})
 
-  )
