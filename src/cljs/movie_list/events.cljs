@@ -52,7 +52,8 @@
     (-> db
         (update :list conj (transform-keys ->kebab-case-keyword movie))
         (assoc :dialog-open? false
-               :movie-name "")
+               :movie-name nil
+               :in-progress? false)
         (update :list sort-movies order))))
 
 (re-frame/reg-event-db

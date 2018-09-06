@@ -34,7 +34,9 @@
      [:h1 @error]
      [ui/auto-complete {:hint-text       "Type name of the movie"
                         :search-text     @movie-name
-                        :dataSource      (map :title @search-results)
+                        :dataSource      (if (not (or (nil? @movie-name) (zero? (count @movie-name))))
+                                           (map :title @search-results)
+                                           [])
                         :open            (boolean @search-results)
                         :filter          (-> js/MaterialUI .-AutoComplete .-fuzzyFilter)
                         :open-on-focus   true
