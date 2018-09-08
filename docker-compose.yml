@@ -1,0 +1,10 @@
+version: '3.6'
+
+services:
+
+  movie-list:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
