@@ -1,6 +1,6 @@
 context('Movie list', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3449')
+    cy.visit('/')
   })
 
   it('Set list name', () => {

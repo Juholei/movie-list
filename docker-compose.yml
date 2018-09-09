@@ -8,3 +8,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - '80:80'
+
+  cypress:
+    build:
+      context: .
+      dockerfile: Dockerfile-cypress
+    depends_on:
+      - movie-list
+
