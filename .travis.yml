@@ -4,7 +4,9 @@ before_install:
   - pyenv shell 3.6.3
   - pip3 install awscli
 
-script: ./build-release.sh
+script:
+  - ./build-release.sh
+  - ./run-docker-cypress.sh
 
 deploy:
   skip_cleanup: true
