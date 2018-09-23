@@ -96,7 +96,7 @@
            [ui/list
             [ui/text-field {:full-width  true
                             :hint-text   "Name of the list"
-                            :value       (or @list-name "")
+                            :default-value       (or @list-name "")
                             :input-style {:text-align "center"}
                             :hint-style  {:text-align "center"
                                           :width      "100%"}
