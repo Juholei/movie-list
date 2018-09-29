@@ -106,10 +106,13 @@
   (fn [{:keys [dragged-item] :as db} _]
     (update db :list (partial remove #(= dragged-item %)))))
 
+
+(defn set-list-name [db [_ name]]
+  (assoc db :list-name name))
+
 (re-frame/reg-event-db
   ::change-list-name
-  (fn [db [_ name]]
-    (assoc db :list-name name)))
+  set-list-name)
 
 (re-frame/reg-event-db
   ::set-order-list
