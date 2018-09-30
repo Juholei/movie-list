@@ -6,10 +6,12 @@
   (fn [db]
     (:list db)))
 
+(defn list-name [{list-name :list-name}]
+  list-name)
+
 (re-frame/reg-sub
   ::list-name
-  (fn [db]
-    (:list-name db)))
+  list-name)
 
 (re-frame/reg-sub
   ::dialog-open?
