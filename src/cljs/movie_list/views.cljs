@@ -52,7 +52,8 @@
                         :on-click       #(re-frame/dispatch [::events/retrieve-movie-by-name @movie-name])}]]))
 
 (defn add-movie-button []
-  [ui/floating-action-button {:style {:margin-left 20
+  [ui/floating-action-button {:id "add-movie"
+                              :style {:margin-left 20
                                       :margin-right 20
                                       :margin-bottom 10}
                               :on-click #(do (re-frame/dispatch [::events/set-order-list nil])
