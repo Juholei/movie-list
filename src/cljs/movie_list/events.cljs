@@ -31,10 +31,30 @@
                             [start end] (split-at destination-index (remove #{dragged-item} list))]
                          (concat start [dragged-item] end))))))
 
+(defn set-add-movie-modal-open [db [_ open?]]
+  (assoc db :dialog-open? open?))
+
+(defn set-error
+  ([db]
+    (set-error db nil))
+  ([db [_ error-msg]]
+   (assoc db :error error-msg)))
+
+(defn set-movie-name
+  ([db]
+    (set-movie-name db [nil ""]))
+  ([db [_ name]]
+    (assoc db :movie-name name)))
+
+(defn show-add-movie-modal [db [_ open?]]
+  (-> db
+      (set-add-movie-modal-open [_ open?])
+      set-error
+      set-movie-name))
+
 (re-frame/reg-event-db
-  ::set-add-movie-modal-open
-  (fn [db [_ open?]]
-    (assoc db :dialog-open? open? :error nil :movie-name "")))
+  ::show-add-movie-modal
+  show-add-movie-modal)
 
 (re-frame/reg-event-db
   ::server-error

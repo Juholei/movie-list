@@ -3,4 +3,4 @@
 (def debug?
   ^boolean goog.DEBUG)
 
-(def omdb-api-key nil)
+(def omdb-api-key "c5909c15")

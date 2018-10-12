@@ -30,7 +30,7 @@
                 :modal false
                 :open  open?
                 :content-style {:width "max-content"}
-                :on-request-close #(re-frame/dispatch [::events/set-add-movie-modal-open false])}
+                :on-request-close #(re-frame/dispatch [::events/show-add-movie-modal false])}
      [:h1 @error]
      [ui/auto-complete {:hint-text       "Type name of the movie"
                         :search-text     @movie-name
@@ -57,7 +57,7 @@
                                       :margin-right 20
                                       :margin-bottom 10}
                               :on-click #(do (re-frame/dispatch [::events/set-order-list nil])
-                                             (re-frame/dispatch [::events/set-add-movie-modal-open true])
+                                             (re-frame/dispatch [::events/show-add-movie-modal true])
                                              (re-frame/dispatch [::events/clear-dragged-item]))}
    (ic/content-add {:color "white"})])
 
