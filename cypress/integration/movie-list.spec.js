@@ -8,8 +8,17 @@ context('Movie list', () => {
       .type('Bestest movies!').should('have.value', 'Bestest movies!');
   });
 
-  it('Open add movie dialog', () => {
-    cy.get("#add-movie").click();
-    cy.contains('Add a movie');
+  describe('Add movie dialog', () => {
+    it("Add a movie to the list", () => {
+        describe("Open add movie dialog", () => {
+          cy.get("#add-movie").click();
+          cy.contains('Add a movie');});
+
+        describe("Search for a movie", () => {
+          cy.get("#movie-name-input").type("Hot Fuzz").should('have.value', 'Hot Fuzz');
+          cy.get('button').contains('Add movie').should('not.be.disabled');
+        });
+    });
+
   });
 })

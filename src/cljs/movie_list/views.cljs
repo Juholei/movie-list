@@ -33,6 +33,7 @@
                 :on-request-close #(re-frame/dispatch [::events/show-add-movie-modal false])}
      [:h1 @error]
      [ui/auto-complete {:hint-text       "Type name of the movie"
+                        :id              "movie-name-input"
                         :search-text     @movie-name
                         :dataSource      (if (not (or (nil? @movie-name) (zero? (count @movie-name))))
                                            (map :title @search-results)
