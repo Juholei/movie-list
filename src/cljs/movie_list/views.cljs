@@ -44,16 +44,17 @@
                         :on-update-input #(do (re-frame/dispatch [::events/set-movie-name %])
                                               (re-frame/dispatch [::events/search-movie %]))}]
      [ui/raised-button {:label          "Add movie"
+                        :id "add-movie-btn"
                         :label-position "before"
                         :icon           (if @in-progress?
                                           (ic/action-autorenew)
                                           (ic/av-movie))
-                        :disabled       @in-progress?
+                        :disabled       (or @in-progress? (= @movie-name ""))
                         :primary        true
                         :on-click       #(re-frame/dispatch [::events/retrieve-movie-by-name @movie-name])}]]))
 
 (defn add-movie-button []
-  [ui/floating-action-button {:id "add-movie"
+  [ui/floating-action-button {:id "open-add-movie-dialog-btn"
                               :style {:margin-left 20
                                       :margin-right 20
                                       :margin-bottom 10}
