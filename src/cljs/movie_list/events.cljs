@@ -76,13 +76,15 @@
                :in-progress? false)
         (update :list sort-movies order))))
 
+(defn update-search-results [db [_ results]]
+  (-> db
+      (update :search-results (partial apply conj) (:search (transform-keys ->kebab-case-keyword results)))
+      (update :search-results distinct)
+      (assoc :in-progress? false)))
+
 (re-frame/reg-event-db
   ::set-search-results
-  (fn [db [_ results]]
-    (-> db
-        (update :search-results (partial apply conj) (:search (transform-keys ->kebab-case-keyword results)))
-        (update :search-results distinct)
-        (assoc :in-progress? false))))
+  update-search-results)
 
 (re-frame/reg-event-fx
   ::search-movie

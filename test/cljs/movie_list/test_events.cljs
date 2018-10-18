@@ -26,3 +26,9 @@
   (testing "Setting movie name"
     (is (= {:movie-name "Kovaa peliä Ranualla"}
            (events/set-movie-name {} [nil "Kovaa peliä Ranualla"])))))
+
+(deftest search-results-test
+  (testing "Setting search results"
+    (is (= {:search-results [{:title "Hot Fuzz"}]
+            :in-progress? false}
+           (events/update-search-results {} [nil {"search" [{"title" "Hot Fuzz"}]}])))))
