@@ -28,7 +28,11 @@
            (events/set-movie-name {} [nil "Kovaa peliä Ranualla"])))))
 
 (deftest search-results-test
-  (testing "Setting search results"
+  (testing "Setting search results results movie being added
+            to the results and progress status being updated"
     (is (= {:search-results [{:title "Hot Fuzz"}]
             :in-progress? false}
-           (events/update-search-results {} [nil {"search" [{"title" "Hot Fuzz"}]}])))))
+           (events/set-search-results {} [nil {"search" [{"title" "Hot Fuzz"}]}]))))
+  (testing "Updating search results adds the movie to the results"
+    (is (= {:search-results [{:title "Hot Fuzz"}]}
+           (events/update-search-results {} {"search" [{"title" "Hot Fuzz"}]})))))
