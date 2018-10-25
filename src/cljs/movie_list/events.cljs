@@ -127,8 +127,7 @@
 
 (re-frame/reg-event-db
   ::set-movie-name
-  (fn [db [_ name]]
-    (assoc db :movie-name name)))
+  set-movie-name)
 
 (re-frame/reg-event-db
   ::delete-dragged-movie
