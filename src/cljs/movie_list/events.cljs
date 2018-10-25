@@ -129,11 +129,14 @@
   ::set-movie-name
   set-movie-name)
 
+(defn remove-movie-from-list [{:keys [dragged-item] :as db} _]
+  (-> db
+      (update :list (partial remove #(= dragged-item %)))
+      (dissoc :dragged-item)))
+
 (re-frame/reg-event-db
   ::delete-dragged-movie
-  (fn [{:keys [dragged-item] :as db} _]
-    (update db :list (partial remove #(= dragged-item %)))))
-
+  remove-movie-from-list)
 
 (defn set-list-name [db [_ name]]
   (assoc db :list-name name))

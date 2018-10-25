@@ -36,3 +36,13 @@
   (testing "Updating search results adds the movie to the results"
     (is (= {:search-results [{:title "Hot Fuzz"}]}
            (events/update-search-results {} {"search" [{"title" "Hot Fuzz"}]})))))
+
+(deftest remove-dragged-movie-from-list-test
+  (testing "Given movie is removed from the movie list"
+    (is (= {:list [{:title "Hot Fuzz"} {:title "Scott Pilgrim vs. the World"}
+                   {:title "Baby Driver"}]}
+           (events/remove-movie-from-list {:list [{:title "Hot Fuzz"}
+                                                  {:title "Scott Pilgrim vs. the World"}
+                                                  {:title "Baby Driver"}
+                                                  {:title "A Bad Movie"}]
+                                           :dragged-item {:title "A Bad Movie"}} nil)))))
