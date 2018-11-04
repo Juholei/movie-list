@@ -13,15 +13,19 @@
  (fn-traced [_ _]
    db/default-db))
 
+(defn set-dragged-item [db [_ item]]
+  (if item
+    (assoc db :dragged-item item)
+    (dissoc db :dragged-item)))
+
 (re-frame/reg-event-db
   ::set-dragged-item
-  (fn [db [_ item]]
-    (assoc db :dragged-item item)))
+  set-dragged-item)
 
 (re-frame/reg-event-db
   ::clear-dragged-item
   (fn [db _]
-    (dissoc db :dragged-item)))
+    (set-dragged-item db nil)))
 
 (re-frame/reg-event-db
   ::drag-finished
@@ -129,14 +133,14 @@
   ::set-movie-name
   set-movie-name)
 
-(defn remove-movie-from-list [{:keys [dragged-item] :as db} _]
+(defn remove-dragged-item [{:keys [dragged-item] :as db} _]
   (-> db
       (update :list (partial remove #(= dragged-item %)))
       (dissoc :dragged-item)))
 
 (re-frame/reg-event-db
   ::delete-dragged-movie
-  remove-movie-from-list)
+  remove-dragged-item)
 
 (defn set-list-name [db [_ name]]
   (assoc db :list-name name))

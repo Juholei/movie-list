@@ -37,12 +37,18 @@
     (is (= {:search-results [{:title "Hot Fuzz"}]}
            (events/update-search-results {} {"search" [{"title" "Hot Fuzz"}]})))))
 
-(deftest remove-dragged-movie-from-list-test
+(deftest dragged-item-test
   (testing "Given movie is removed from the movie list"
     (is (= {:list [{:title "Hot Fuzz"} {:title "Scott Pilgrim vs. the World"}
                    {:title "Baby Driver"}]}
-           (events/remove-movie-from-list {:list [{:title "Hot Fuzz"}
-                                                  {:title "Scott Pilgrim vs. the World"}
-                                                  {:title "Baby Driver"}
-                                                  {:title "A Bad Movie"}]
-                                           :dragged-item {:title "A Bad Movie"}} nil)))))
+           (events/remove-dragged-item {:list         [{:title "Hot Fuzz"}
+                                                       {:title "Scott Pilgrim vs. the World"}
+                                                       {:title "Baby Driver"}
+                                                       {:title "A Bad Movie"}]
+                                        :dragged-item {:title "A Bad Movie"}} nil))))
+  (testing "Dragged item can be set"
+    (is (= {:dragged-item {:title "Hot Fuzz"}}
+           (events/set-dragged-item {} [_ {:title "Hot Fuzz"}]))))
+  (testing "Setting dragged item with nil clear the item"
+    (is (= {}
+           (events/set-dragged-item {} [_ nil])))))
