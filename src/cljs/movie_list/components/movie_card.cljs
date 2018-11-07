@@ -6,8 +6,7 @@
 (defn movie-card [movie-data]
   [:div.wrapper {:draggable     true
                  :on-drag-over  #(.preventDefault %)
-                 :on-drag-start #(do (.setData (.-dataTransfer %) "text/plain" " ")
-                                     (re-frame/dispatch [::events/set-dragged-item movie-data]))
+                 :on-drag-start #(re-frame/dispatch [::events/set-dragged-item movie-data])
                  :on-drag-end   #(re-frame/dispatch [::events/clear-dragged-item])
                  :on-drop       #(do (re-frame/dispatch [::events/set-order-list nil])
                                      (re-frame/dispatch [::events/drag-finished movie-data]))}

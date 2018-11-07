@@ -64,7 +64,8 @@
    (ic/content-add {:color "white"})])
 
 (defn remove-movie-button []
-  [ui/floating-action-button {:style {:margin-left 20
+  [ui/floating-action-button {:id "delete-movie-btn"
+                              :style {:margin-left 20
                                       :margin-right 20
                                       :margin-bottom 10}
                               :background-color "red"
