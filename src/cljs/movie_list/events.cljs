@@ -108,26 +108,30 @@
                   :on-success      [::set-search-results]
                   :on-failure      [::server-error]}}))
 
+(defn retrieve-movie-by-id [_ [_ id]]
+  {:http-xhrio {:method          :get
+                :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&i=" id)
+                :timeout         8000
+                :response-format (ajax/json-response-format {:keywords? true})
+                :on-success      [::add-movie-to-list]
+                :on-failure      [::server-error]}})
+
+(defn retrieve-movie-by-name [{:keys [db]} [_ id]]
+  {:db         (assoc db :in-progress? true)
+   :http-xhrio {:method          :get
+                :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&t=" id)
+                :timeout         8000
+                :response-format (ajax/json-response-format {:keywords? true})
+                :on-success      [::add-movie-to-list]
+                :on-failure      [::server-error]}})
+
 (re-frame/reg-event-fx
   ::retrieve-movie-by-id
-  (fn [_ [_ id]]
-    {:http-xhrio {:method          :get
-                  :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&i=" id)
-                  :timeout         8000
-                  :response-format (ajax/json-response-format {:keywords? true})
-                  :on-success      [::add-movie-to-list]
-                  :on-failure      [::server-error]}}))
+  retrieve-movie-by-id)
 
 (re-frame/reg-event-fx
   ::retrieve-movie-by-name
-  (fn [{:keys [db]} [_ id]]
-    {:db         (assoc db :in-progress? true)
-     :http-xhrio {:method          :get
-                  :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&t=" id)
-                  :timeout         8000
-                  :response-format (ajax/json-response-format {:keywords? true})
-                  :on-success      [::add-movie-to-list]
-                  :on-failure      [::server-error]}}))
+  retrieve-movie-by-name)
 
 (re-frame/reg-event-db
   ::set-movie-name
