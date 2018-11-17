@@ -48,7 +48,7 @@
                                         :dragged-item {:title "A Bad Movie"}} nil))))
   (testing "Dragged item can be set"
     (is (= {:dragged-item {:title "Hot Fuzz"}}
-           (events/set-dragged-item {} [_ {:title "Hot Fuzz"}]))))
-  (testing "Setting dragged item with nil clear the item"
+           (events/set-dragged-item {} [nil {:title "Hot Fuzz"}]))))
+  (testing "Setting dragged item with nil clears the item"
     (is (= {}
-           (events/set-dragged-item {} [_ nil])))))
+           (events/set-dragged-item {} [nil nil])))))
