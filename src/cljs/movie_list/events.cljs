@@ -117,7 +117,7 @@
                 :on-failure      [::server-error]}})
 
 (defn retrieve-movie-by-name [{:keys [db]} [_ id]]
-  {:db         (assoc db :in-progress? true)
+  {:db         (update-progress-status db true)
    :http-xhrio {:method          :get
                 :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&t=" id)
                 :timeout         8000

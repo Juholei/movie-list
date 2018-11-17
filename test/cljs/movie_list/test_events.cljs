@@ -1,6 +1,7 @@
 (ns movie-list.test-events
   (:require [cljs.test :refer-macros [deftest testing is]]
-            [movie-list.events :as events]))
+            [movie-list.events :as events]
+            [clojure.string :as string]))
 
 (deftest list-name-test
   (testing "Setting list name sets the name"
@@ -52,3 +53,14 @@
   (testing "Setting dragged item with nil clears the item"
     (is (= {}
            (events/set-dragged-item {} [nil nil])))))
+
+(deftest http-fx-test
+  (testing "retrieve-movie-by-name constructs correct url to retrieve movie data "
+    (let [{:keys [http-xhrio]} (events/retrieve-movie-by-name {:db {}} [nil "Hot Fuzz"])]
+      (is (string/starts-with? (:uri http-xhrio)
+                               "https://www.omdbapi.com/?apikey="))
+      (is (string/ends-with? (:uri http-xhrio)
+                             "&t=Hot Fuzz"))))
+  (testing "retrieve-movie-by-name sets progress to true"
+    (is (= {:in-progress? true}
+           (:db (events/retrieve-movie-by-name {:db {}} [nil "Hot Fuzz"]))))))
