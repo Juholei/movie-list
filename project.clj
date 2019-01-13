@@ -32,7 +32,9 @@
 
           :plugins      [[lein-figwheel "0.5.17"]
                          [lein-doo "0.1.11"]]
-          :source-paths ["env/dev/clj"]}
+          :source-paths ["env/dev/clj"]
+          :doo {:build "test"
+                :paths {:karma "./node_modules/karma/bin/karma"}}}
    :prod {:dependencies [[day8.re-frame/tracing-stubs "0.5.1"]]}}
 
   :cljsbuild
