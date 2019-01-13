@@ -97,34 +97,28 @@
   ::set-search-results
   set-search-results)
 
-(def base-request {:method          :get
-                   :timeout         8000
-                   :response-format (ajax/json-response-format {:keywords? true})
-                   :on-success      [::add-movie-to-list]
-                   :on-failure      [::server-error]})
+(def get-request {:method          :get
+                  :timeout         8000
+                  :response-format (ajax/json-response-format {:keywords? true})})
 
 (re-frame/reg-event-fx
   ::search-movie
   (fn [{:keys [db]} [_ name]]
     {:db         (assoc db :in-progress? true :error nil)
-     :http-xhrio {:method          :get
-                  :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&type=movie&s=" name)
-                  :timeout         8000
-                  :response-format (ajax/json-response-format {:keywords? true})
-                  :on-success      [::set-search-results]
-                  :on-failure      [::server-error]}}))
+     :http-xhrio (merge get-request {:uri        (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&type=movie&s=" name)
+                                     :on-success [::set-search-results]
+                                     :on-failure [::server-error]})}))
 
 (defn retrieve-movie-by-id [_ [_ id]]
-  {:http-xhrio {:method          :get
-                :uri             (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&i=" id)
-                :timeout         8000
-                :response-format (ajax/json-response-format {:keywords? true})
-                :on-success      [::add-movie-to-list]
-                :on-failure      [::server-error]}})
+  {:http-xhrio (merge get-request {:uri        (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&i=" id)
+                                   :on-success [::add-movie-to-list]
+                                   :on-failure [::server-error]})})
 
 (defn retrieve-movie-by-name [{:keys [db]} [_ id]]
   {:db         (update-progress-status db true)
-   :http-xhrio (assoc base-request :uri (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&t=" id))})
+   :http-xhrio (merge get-request {:uri        (str "https://www.omdbapi.com/?apikey=" omdb-api-key "&t=" id)
+                                   :on-success [::add-movie-to-list]
+                                   :on-failure [::server-error]})})
 
 (re-frame/reg-event-fx
   ::retrieve-movie-by-id
