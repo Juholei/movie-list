@@ -67,7 +67,11 @@
      :compiler     {:main          movie-list.runner
                     :output-to     "resources/public/js/compiled/test.js"
                     :output-dir    "resources/public/js/compiled/test/out"
-                    :optimizations :none}}
+                    :optimizations :none
+                    :npm-deps {:karma "3.1.1"
+                               :karma-cljs-test "0.1.0"
+                               :karma-chrome-launcher "2.2.0"}
+                    :install-deps true}}
     ]}
   :aliases {"build-release" ["do" "clean," "cljsbuild" "once" "min"]})
 

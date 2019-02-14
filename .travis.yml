@@ -3,8 +3,6 @@ language: clojure
 before_install:
   - pyenv shell 3.6.3
   - pip3 install awscli
-  - npm install -g karma-cli
-  - npm install
 
 script:
   - lein doo chrome-headless test once
