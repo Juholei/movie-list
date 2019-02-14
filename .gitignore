@@ -7,3 +7,5 @@ out
 .lein*
 .rebel_readline_history
 *.iml
+.DS_Store
+node_modules/
