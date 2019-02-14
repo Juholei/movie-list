@@ -1,9 +1,10 @@
 (defproject movie-list "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.10.0"]
-                 [org.clojure/clojurescript "1.10.439"]
+                 [org.clojure/clojurescript "1.10.520"]
                  [reagent "0.8.1"]
                  [re-frame "0.10.6"]
-                 [cljs-react-material-ui "0.2.48"]
+                 [cljs-react-material-ui "0.2.50" :exclusions [cljsjs/material-ui cljsjs/react]]
+                 [cljsjs/material-ui "0.20.1-0" :exclusions [cljsjs/react]]
                  [cljs-ajax "0.8.0"]
                  [day8.re-frame/http-fx "0.1.6"]
                  [camel-snake-kebab "0.4.0"]
