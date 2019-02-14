@@ -20,17 +20,17 @@
 
   :figwheel {:css-dirs ["resources/public/css"]
              :nrepl-port 7002
-             :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+             :nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
 
   :profiles
   {:dev
          {:dependencies [[binaryage/devtools "0.9.10"]
                          [day8.re-frame/re-frame-10x "0.3.6"]
                          [day8.re-frame/tracing "0.5.1"]
-                         [com.cemerick/piggieback "0.2.2"]
-                         [figwheel-sidecar "0.5.17"]]
+                         [cider/piggieback "0.4.0"]
+                         [figwheel-sidecar "0.5.18"]]
 
-          :plugins      [[lein-figwheel "0.5.17"]
+          :plugins      [[lein-figwheel "0.5.18"]
                          [lein-doo "0.1.11"]]
           :source-paths ["env/dev/clj"]
           :doo {:build "test"
