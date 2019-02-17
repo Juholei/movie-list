@@ -1,17 +1,17 @@
 (ns movie-list.components.material-ui-icon-wrapper
-  (:require [cljs-react-material-ui.icons :as ic]))
+  (:require ["@material-ui/icons" :as mui-icons]))
 
-(defn action-autorenew [& args]
-  (ic/action-autorenew args))
-
-(defn av-movie [& args]
-  (ic/av-movie args))
-
+;(defn action-autorenew [& args]
+;  (ic/action-autorenew args))
+;
+;(defn av-movie [& args]
+;  (ic/av-movie args))
+;
 (defn content-add [& args]
-  (ic/content-add args))
+  [:> mui-icons/Add args])
 
 (defn action-delete-forever [& args]
-  (ic/action-delete-forever args))
+  [:> mui-icons/DeleteForever args])
 
 (defn social-share [& args]
-  (ic/social-share args))
+  [:> mui-icons/Share args])

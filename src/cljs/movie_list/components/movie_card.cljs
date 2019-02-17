@@ -1,5 +1,5 @@
 (ns movie-list.components.movie-card
-  (:require [cljs-react-material-ui.reagent :as ui]
+  (:require ["@material-ui/core" :as ui]
             [re-frame.core :as re-frame]
             [movie-list.events :as events]))
 
@@ -12,10 +12,7 @@
                                      (re-frame/dispatch [::events/drag-finished movie-data]))}
    [:div.blur {:style {:background-image (str "url(" (:poster movie-data) ")")}}]
    [:div.content
-    [ui/card {:style {:background "transparent"}}
-     [ui/card-header {:title                  (:title movie-data)
-                      :subtitle               (:year movie-data)
-                      :avatar                 (:poster movie-data)
-                      :act-as-expander        true
-                      :show-expandable-button true}]
-     [ui/card-text {:expandable true} (:plot movie-data)]]]])
+    [:> ui/Card {:style {:background "transparent"}}
+     [:> ui/CardHeader {:title                  (:title movie-data)
+                        :subheader               (:year movie-data)}]
+     [:> ui/CardContent #_{:expandable true} (:plot movie-data)]]]])
